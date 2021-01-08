@@ -1,0 +1,13 @@
+body {
+    font-family: monospace;
+    padding-left: 25px;
+    padding-top: 10px;
+}
+
+p {
+    font-size: 14px; 
+}
+
+fieldset {
+    border: 0;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./static/css/main.css">
+    <title>Account</title>
+  </head>
+  <body>
+    <h2>{{pub_key}}</h2>
+    <h3>Balances:</h3>
+    <ul>
+      {% for bal in json_obj['balances'] %}
+        {% if bal['asset_type'] == 'native' %}
+          <li>{{bal['balance']}} XLM</li>
+        {% else %}
+          <li>{{bal['balance']}} {{bal['asset_code']}}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <h3>Swap XLM for: </h3>
+    <form action="tx" method="post">
+      <fieldset id="group1">
+        {% for bal in json_obj['balances'] %}
+          {% if bal['asset_type'] == 'native' %}
+          {% else %}
+            <input type="radio" value="{{bal['asset_code']}}" name="currency">
+            <label>{{bal['asset_code']}}<br>
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+      <fieldset id="amount">
+        <input type="text" name="amount" placeholder="Amount of XLM to swap">
+      </fieldset>
+      <fieldset>
+        <input type="submit" value="Create Transaction">
+      </fieldset>
+    </form>
+  </body>
+</html>
