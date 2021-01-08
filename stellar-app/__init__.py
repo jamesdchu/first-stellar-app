@@ -10,6 +10,25 @@ server = Server(horizon_url='https://horizon-testnet.stellar.org')
 # URL for path endpoint - find path from x to y.
 path_url = 'https://horizon-testnet.stellar.org/paths/strict-send?destination_assets={}%3A{}&source_asset_type=native&source_amount={}'
 
+# Creating an account
+def create_account(): 
+    pair = Keypair.random()
+    print(f"Secret: {pair.secret}")
+    print(f"Public Key: {pair.public_key}") 
+    public_key = pair.public_key
+    secret_key = pair.secret_key
+    response = requests.get(f"https://friendbot.stellar.org?addr={public_key}")
+    if response.status_code == 200:
+        print(f"SUCCESS! You have a new account :)\n{response.text}")
+    else:
+        print(f"ERROR! Response: \n{response.text}")
+
+def balance(): 
+    server = Server("https://horizon-testnet.stellar.org")
+    public_key = "GD4NB2FLQAN5JO7PKPGZJMNBDYQXVSNVC7DEIZMOL5WSNSBLEBUTEF5Q" #SUBSTITUTE WITH MONGODB INFO
+    account = server.accounts().account_id(public_key).call()
+    for balance in account['balances']:
+        print(f"Type: {balance['asset_type']}, Balance: {balance['balance']}")
 
 def create_app(test_config=None):
     # Create and configure the Flask app.
