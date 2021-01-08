@@ -4,11 +4,12 @@ from flask_session import Session
 from stellar_sdk import Server, Asset, Account, Keypair, TransactionBuilder, Network
 
 # Accounts endpoint - get info about an account.
-accounts_url = '#'
+accounts_url = 'https://horizon-testnet.stellar.org/accounts/{}'
 # Interact with test net.
-server = '#'
+server = Server(horizon_url='https://horizon-testnet.stellar.org')
 # URL for path endpoint - find path from x to y.
-path_url = '#'
+path_url = 'https://horizon-testnet.stellar.org/paths/strict-send?destination_assets={}%3A{}&source_asset_type=native&source_amount={}'
+
 
 def create_app(test_config=None):
     # Create and configure the Flask app.
@@ -31,11 +32,11 @@ def create_app(test_config=None):
             pub_key = session.get('pub_key', None)
 
         # Get information from Horizon accounts end point.
-        r = '#'
-        json_obj = '#'
+        r = requests.get(accounts_url.format(pub_key))
+        json_obj = r.json()
 
         # Store balances in session variable.
-        session['balances'] = '#'
+        session['balances'] = json_obj
         return render_template('account.html', pub_key=pub_key, json_obj=json_obj)
 
     # See final trade information, sign & submit transaction
